@@ -1,9 +1,6 @@
 import unittest    
 import random
 
-
-
-
 #맞는 로또번호 저장
 # 컴퓨터가 임의의 수를 정해서 저장해둠
 def correct_rad():
@@ -13,8 +10,15 @@ def correct_rad():
 # 랜덤6개수와 저장된 수를 정렬후 비교
 def compare(my_random,correct_random):
 
-    bonus=random.randint(1,45)
-    
+    # 보너스 번호는 컴퓨터가 뽑는 것.
+    # 보너스번호랑 correct_random이랑 겹치면 안되는데 어떡하지
+
+    bonus = 0
+    while True:
+        bonus=random.randint(1,46)
+        if bonus not in correct_random:
+            break
+
     print(f"보너스 번호: {bonus}")
     
    #bonus와 correct_random을 비교해 True가 나온경우->5등
@@ -22,101 +26,81 @@ def compare(my_random,correct_random):
     cnt=0
     num=1
 
-    while True:
-        try:
-            for i, j in zip(correct_random,my_random):
-                print(f"{num}번째:{i},{j},{i==j}")
-                num+=1
-                if (i==j)==True:
-                    cnt+=1
-                print(f"맞은 개수:{cnt}")
+    for i, j in zip(correct_random,my_random):
+        print(f"{num}번째:{i},{j},{i==j}")
+       n
+        if (i==j)==True:
+            cnt+=1
+        print(f"맞은 개수:{cnt}")
 
-            if cnt>=6:
-                print("1등입니다.")
-            elif cnt==5 and a       :#위의 #경우
-                print("2등입니다.")
-            elif cnt==5:
-                print("3등입니다.")
-            elif cnt==4:
-                print("4등입니다.")
-            elif cnt==3:
-                print("5등입니다.")
-            elif cnt==2:
-                print("등수가없습니다.")            
-            elif cnt==1:
-                print("등수가 없습니다.")
-            elif cnt==0:          
-                print("등수가 없습니다.")    
+    # 2등인 경우, cnt ==5 and bonus in my_random
+    # 1등인 경우, cnt == 6
+    # 3등인 경우, cnt == 5
+    # 4등인 경우, cnt == 4
+    # 5등인 경우, cnt == 3
 
-        finally:
-            btn=input("그만하려면 'a'를 입력하세요:").lower()
-            if btn=='a':
-                break
+    if cnt == 5 and bonus in my_random:
+        print('2등입니다.')
+    elif cnt == 6:
+        print('1등입니다.')
+    elif cnt <= 5 and cnt >= 3:
+        print(f'{8-cnt}등입니다.')
+    else:
+        print("낙첨입니다.")
 
 # 자동으로 로또 번호 생성
 def auto():
     return sorted(random.sample(range(1,46),6))
+
+    #random.sample: 지정된 수에서 랜덤으로 뽑아 리스트로 반환해주는 함수
+    #거기다가 정렬함
 
 # 반자동으로 로또 번호 생성   
 #왜 try 되는 구간이 아예 번호고르기부터 되는지 모르겠음
 #제대로 해도 안돼
 
 def half_auto():
-    print("로또번호를 반자동으로 생성합니다.")
-    global my_random
-    try:
+    #뽑은수 따로 저장
+        #이거 안쓰면 뭐하라그랬더라
         my_random=[]
-
-        choice_num=input("몇개의 수를 입력하시겠습니까?:")
+        choice_num=input("몇개의 수를 입력하시겠습니까?:")#입력하고 싶은 수
         choice_num=int(choice_num)
 
         print(f"{choice_num}개의 수를 입력해주세요:")
- 
         num=list(map(int,input().split()))
         my_random.append(num)
         my_random=my_random[0]+my_random[1:]
 
-        for i in range(6-choice_num):
-            my_random=random.sample(range(1,45),(6-choice_num))
-    finally:
-        print("")
-    print(f"내 로또 번호: {sorted(my_random)}")
-
-    return my_random
+        for i in range(6-choice_num): #6개에서 남은 나머지를 랜덤수로 채워야되는데..
+            sorted(my_random.append(i))##약간 그지같이 코드를 짜놨넹^^^^
+        return my_random
 
 # 수동으로 로또 번호 생성
-def manu():
-    print("로또번호를 수동으로 생성합니다.")
-    global my_random
-    my_random=[]
+def manu(): 
     print("6개의 수를 입력해주세요:")
 
     num=list(map(int,input().split()))
     my_random.append(num)
     my_random=sum(my_random,[])
 
-    print(f"내 로또 번호: {sorted(my_random)}")
-
-    return my_random
+    return sorted(my_random)
 
 # 게임을 여러판 할수있게 선택권 두기
-def game_count():
-    if game_value==auto:
-        #try:
-            count=int(input())
-        #except:
-            #print("잘못된 입력입니다\n다시 입력해주세요:")
-    elif game_value==half_auto:
-        #try:
-            while True:
-                if count==0:
-                    break
-                else:
-                    count=int(input())
-                    #전체적인 if문 어떻게 넣지
-        #except:
-            #print("잘못된 입력입니다.\n다시 입력해주세요")
-
+#def game_count():
+#    print("게임 몇판 하실거에요(0~):")
+#    game_count=int(input())
+#    while True:
+#        if game_count>0 and game_count<10000000:
+#            next_count=game_count-1
+#            return next_count
+#        elif game_count==0: 
+#            break 
+#        else:
+#            print("다시입력하시오.")
+            
+                   
+#전체적인 if문 어떻게 넣지
+#예외처리 함수 만들어서 처리할수있는가
 
 
 if __name__=="__main__":
@@ -128,43 +112,51 @@ if __name__=="__main__":
     print("3:수동")
     print("4:프로그램 종료")
 
+    #예외처리 가능?
+
     while True:
-        try:
             n=input("번호를 선택해주세요:")
             n=int(n)
+            #게임 횟수 입력 여기다가 할거임
+            game_count=int(input("게임 몇번하시겠사요:"))
+            for i in range(0,game_count):
             #함수 count여기다가 넣어야하나
-            
-            if n==1: 
+                print("------------------------------------------")
+                print(f"게임 횟수:{i+1}")
+                if n==1: 
                  #game_value=auto_n      #자동
 #                 game_count() 
                 # 자동으로 생성된 6개 번호 리스트가 lotto_numbers에 대입 e.g) [a,b,c,d,e,f]
+                    print("로또번호를 자동으로 생성합니다.")
+                    user_numbers = auto() 
+                    print(f"내 로또 번호: {user_numbers}")
 
-                print("로또번호를 자동으로 생성합니다.")
-                user_numbers = auto() 
-                print(f"내 로또 번호: {lotto_numbers}")
+                    answer_numbers = correct_rad()
 
-                answer_numbers = correct_rad()
-
-                compare(user_numbers, answer_numbers)
-            elif n==2:      #반자동
+                    compare(user_numbers, answer_numbers)
+                elif n==2:      #반자동
                 #game_value=half_auto_n
                 #game_count()
-                half_auto()
-                correct_rad()
-                compare(my_random,correct_random)
-            elif n==3:      #수동
-                #game_value=manu
+                    print("로또번호를 반자동으로 생성합니다")
+                    user_numbers=half_auto()
+                    print(f"내 로또번호:{user_numbers}")
+                    answer_numbers=correct_rad()
+                    compare(user_numbers,answer_numbers)
+                elif n==3:      #수동
+                #game_value=man호호
 #                 game_count()
-                manu()
-                correct_rad()
-                compare(my_random,correct_random)
-            elif n==4:
-                print("프로그램이 종료됩니다.")
-            break
-        finally:
-            print("다시 입력해주세요:")
+                    print("로또 번호를 수동으로 입력합니다.")
+                    user_numbers=manu()
+                    print(f"내 로또번호:{user_numbers}")
+                    answer_numbers=correct_rad()
+                    compare(user_numbers,answer_numbers)
+                elif n==4:
+                    print("프로그램이 종료됩니다.")
+                    break
+                else:
+                    print("다시 입력하시오.")
       
-     
+            i-=1
         
 
 #피드백 내용
