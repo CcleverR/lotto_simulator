@@ -1,6 +1,22 @@
 import unittest    
 import random
 
+#중복값 제거
+def dedupe(my_random):
+    #중복 제거후 새로만들 리스트
+    my_random_new=[]
+
+    if list(my_random)==list(set(my_random)):
+        for i in my_random:
+            if i not in my_random:
+                my_random.append(i)
+    else:
+        if i not in my_random_new:
+            my_random_new.append(i)
+
+    return my_random_new
+
+
 #맞는 로또번호 저장
 # 컴퓨터가 임의의 수를 정해서 저장해둠
 def correct_rad():
@@ -28,7 +44,7 @@ def compare(my_random,correct_random):
 
     for i, j in zip(correct_random,my_random):
         print(f"{num}번째:{i},{j},{i==j}")
-       n
+      
         if (i==j)==True:
             cnt+=1
         print(f"맞은 개수:{cnt}")
@@ -59,29 +75,66 @@ def auto():
 #왜 try 되는 구간이 아예 번호고르기부터 되는지 모르겠음
 #제대로 해도 안돼
 
+
 def half_auto():
     #뽑은수 따로 저장
         #이거 안쓰면 뭐하라그랬더라
+        # FIXME: n개 입력 받았는데, n개보다 많은 수를 입력한 경우
+        # -> N개의 입력 범위를 벗어나면 N개 다시 입력하게하기
+        # FIXME: 1부터 45까지 이외의 범위 벗어나는 수 입력되는 문제
+        # -> 입력을 받았을때 범위를 IF문으로 정해서 에러 해결 
+    
+        while True:
+            choice_num=int(input("몇개의 수를 입력하시겠습니까?:"))#입력하고 싶은 수
+            print(f"{choice_num}개의 수를 입력해주세요:")
+            if choice_num >= 6:
+                print("1~5 사이 수를 입력해주세요.")
+            break
+
+
         my_random=[]
-        choice_num=input("몇개의 수를 입력하시겠습니까?:")#입력하고 싶은 수
-        choice_num=int(choice_num)
+            
+        while len(my_random)<choice_num:
+            userInput=list(map(int,input().split()))
+            for i in userInput:
+                if len(my_random)==choice_num:
+                    print("기존리스트와 수가 같은경우 뒤에는 다 나가리임")
+                    break
+                if int(i)<1 or int(i)>45:
+                    print("범위가 벗어나는경우 다시입력해야됨")
+                    continue
+                my_random.append(int(i))
 
-        print(f"{choice_num}개의 수를 입력해주세요:")
-        num=list(map(int,input().split()))
-        my_random.append(num)
-        my_random=my_random[0]+my_random[1:]
+       
+        print(my_random)
 
-        for i in range(6-choice_num): #6개에서 남은 나머지를 랜덤수로 채워야되는데..
-            sorted(my_random.append(i))##약간 그지같이 코드를 짜놨넹^^^^
-        return my_random
+
+
+        
+        #my_random=my_random[0]+my_random[1:]
+        #print(my_random)
+        #if 1>my_random or my_random>45:
+            #print("다시입력하셈")
+        
+        lotto_numbers=list(range(1,46))
+        
+        for i in my_random: #[3,4,10]
+            # lotto_numbers = [1~45]
+            # my_random = [3,4,10]
+            lotto_numbers.remove(i)
+
+        for i in random.sample(lotto_numbers,6-choice_num):
+            my_random.append(i)
+
+        #6개에서 나머지 랜덤수로 채우기
+
+        return sorted(my_random)
 
 # 수동으로 로또 번호 생성
 def manu(): 
     print("6개의 수를 입력해주세요:")
 
-    num=list(map(int,input().split()))
-    my_random.append(num)
-    my_random=sum(my_random,[])
+    my_random=list(map(int,input().split()))
 
     return sorted(my_random)
 
@@ -158,6 +211,12 @@ if __name__=="__main__":
       
             i-=1
         
+
+#다 잘 돌아가긴 하는데
+# 예외처리
+# 중복 ->함수 만들었는디,,어떻게 합치냐
+# 이거만 신경쓰면될듯        
+
 
 #피드백 내용
 #프로그램 오류 뜨지 않게끔 해야되는거임 (예외처리)
